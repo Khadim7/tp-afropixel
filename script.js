@@ -1,3 +1,4 @@
+// ---------- DONNÉES ----------
 // Tableau des produits
 const pictures = [
   { id: 1, nom: "Femme noire", prix: 25000, categorie: "art", url: "images/blackness.jpg" },
@@ -17,34 +18,87 @@ const pictures = [
   { id: 7, nom: "Cybercriminalité", prix: 120012000, categorie: "papier peint", url: "images/wallpaper-10.jfif" }
 ];
 
-// Récupération des éléments du HTML
-const header = document.querySelector("header");
-const main = document.querySelector("main");
 
-//  HEADER 
-header.innerHTML = `
-  <img class="cart-logo" src="images/cart-logo.png" alt="Panier">
-  <h1>AFRO PIXEL</h1>
-  <h2>LA RÉFÉRENCE DANS LA VENTE D'IMAGES DE QUALITÉ</h2>
-  <hr>
-  <hr>
-`;
+// ---------- COMPOSANTS ----------
 
-//  MAIN : cartes produits 
-let cartes = "";
-
-for (const produit of pictures) {
-  cartes += `
-    <article class="card">
-      <img src="${produit.url}" alt="${produit.nom}">
-      <p class="nom">${produit.nom}</p>
-      <p class="prix">${produit.prix} CFA</p>
-      <div class="boutons">
-        <button>+</button>
-        <button>-</button>
-      </div>
-    </article>
-  `;
+// Le panier
+class Panier {
+  render() {
+    return `<img class="cart-logo" src="images/cart-logo.png" alt="Panier">`;
+  }
 }
 
-main.innerHTML = cartes;
+// L'entête : titres, panier et traits de séparation
+class Entete {
+  constructor(titre, sousTitre) {
+    this.titre = titre;
+    this.sousTitre = sousTitre;
+    this.panier = new Panier();
+  }
+
+  render() {
+    return `
+      ${this.panier.render()}
+      <h1>${this.titre}</h1>
+      <h2>${this.sousTitre}</h2>
+      <hr>
+      <hr>
+    `;
+  }
+}
+
+// Une carte produit (image, nom, prix, boutons)
+class CarteProduit {
+  constructor(produit) {
+    this.produit = produit;
+  }
+
+  render() {
+    const { nom, prix, url } = this.produit;
+    return `
+      <article class="card">
+        <img src="${url}" alt="${nom}">
+        <p class="nom">${nom}</p>
+        <p class="prix">${prix} CFA</p>
+        <div class="boutons">
+          <button>+</button>
+          <button>-</button>
+        </div>
+      </article>
+    `;
+  }
+}
+
+// La liste de tous les produits (assemble les cartes)
+class ListeProduit {
+  constructor(produits) {
+    this.cartes = produits.map((produit) => new CarteProduit(produit));
+  }
+
+  render() {
+    return this.cartes.map((carte) => carte.render()).join("");
+  }
+}
+
+// ---------- APPLICATION ----------
+
+// Classe principale : relie les composants aux éléments du HTML
+class App {
+  constructor(produits) {
+    this.header = document.querySelector("header");
+    this.main = document.querySelector("main");
+
+    this.entete = new Entete(
+      "AFRO PIXEL",
+      "LA RÉFÉRENCE DANS LA VENTE D'IMAGES DE QUALITÉ"
+    );
+    this.liste = new ListeProduit(produits);
+  }
+
+  render() {
+    this.header.innerHTML = this.entete.render();
+    this.main.innerHTML = this.liste.render();
+  }
+}
+
+new App(pictures).render();
