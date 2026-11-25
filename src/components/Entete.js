@@ -1,18 +1,23 @@
-import { Panier } from "./Panier.js";
-
-// L'entête : titres, panier et traits de séparation
+// L'entête : titres, icône du panier (avec le nombre d'articles) et traits
 export class Entete {
-  constructor(titre, sousTitre) {
-    this.titre = titre;
-    this.sousTitre = sousTitre;
-    this.panier = new Panier();
+  constructor(nombreArticles) {
+    this.nombreArticles = nombreArticles;
   }
 
   render() {
+    // le badge rouge s'affiche seulement s'il y a des articles
+    let badge = "";
+    if (this.nombreArticles > 0) {
+      badge = `<span class="badge">${this.nombreArticles}</span>`;
+    }
+
     return `
-      ${this.panier.render()}
-      <h1>${this.titre}</h1>
-      <h2>${this.sousTitre}</h2>
+      <button class="panier-btn">
+        <img class="cart-logo" src="images/cart-logo.png" alt="Panier">
+        ${badge}
+      </button>
+      <h1>AFRO PIXEL</h1>
+      <h2>LA RÉFÉRENCE DANS LA VENTE D'IMAGES DE QUALITÉ</h2>
       <hr>
       <hr>
     `;

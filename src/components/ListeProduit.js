@@ -1,12 +1,18 @@
 import { CarteProduit } from "./CarteProduit.js";
 
-// La liste de tous les produits (assemble les cartes)
+// La liste de toutes les cartes produits
 export class ListeProduit {
-  constructor(produits) {
-    this.cartes = produits.map((produit) => new CarteProduit(produit));
+  constructor(produits, panier) {
+    this.produits = produits;
+    this.panier = panier;
   }
 
   render() {
-    return this.cartes.map((carte) => carte.render()).join("");
+    let html = "";
+    for (const produit of this.produits) {
+      const quantite = this.panier[produit.id] || 0;
+      html += new CarteProduit(produit, quantite).render();
+    }
+    return html;
   }
 }
