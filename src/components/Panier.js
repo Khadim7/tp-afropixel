@@ -1,5 +1,5 @@
 // Le panneau qui montre ce qu'il y a dans le panier
-export class PanierDetails {
+export class Panier {
   constructor(produits, panier) {
     this.produits = produits;
     this.panier = panier;

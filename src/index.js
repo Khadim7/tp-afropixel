@@ -1,7 +1,7 @@
 import { pictures } from "./data/pictures.js";
 import { Entete } from "./components/Entete.js";
 import { ListeProduit } from "./components/ListeProduit.js";
-import { PanierDetails } from "./components/PanierDetails.js";
+import { Panier } from "./components/Panier.js";
 
 class App {
   constructor(produits) {
@@ -56,7 +56,7 @@ class App {
 
     this.header.innerHTML = entete.render();
     if (this.panierOuvert) {
-      this.header.innerHTML += new PanierDetails(this.produits, this.panier).render();
+      this.header.innerHTML += new Panier(this.produits, this.panier).render();
     }
     this.main.innerHTML = liste.render();
 
